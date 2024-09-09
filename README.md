@@ -120,7 +120,7 @@ smart-healthcare-appointment/
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/smart-healthcare-appointment.git
+   git clone https://github.com/SenthamaraiKannan-Dhanavel/Smart-Healthcare-Appointment-System.git
    cd smart-healthcare-appointment
    ```
 
