@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+      containers:
+      - name: postgres
+        image: postgres:13
+        volumeMounts:
+          - name: postgres-storage
+            mountPath: /var/lib/postgresql/data
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: your_db_name
+        - name: POSTGRES_USER
+          value: your_db_user
+        - name: POSTGRES_PASSWORD
+          value: your_db_password
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:alpine
+        ports:
+        - containerPort: 6379
