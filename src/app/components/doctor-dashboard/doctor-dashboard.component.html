@@ -1,0 +1,57 @@
+<app-header></app-header>
+<div class="container mt-5">
+  <h1>Doctor Dashboard</h1>
+  <div class="mb-3">
+    <button [routerLink]="['/doctor-availability']" class="btn btn-primary">Appointment Settings</button>
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+  
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="currentAppointmentsExpanded">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Current Appointments
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-container *ngIf="currentAppointments.length > 0; else noCurrentAppointments">
+        <ul class="list-group">
+          <li *ngFor="let appointment of currentAppointments" class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>Patient:</strong> {{ appointment.patient.full_name || appointment.patient.username }}<br>
+              <strong>Date:</strong> {{ formatAppointmentDate(appointment.date) }}<br>
+              <strong>Reason:</strong> {{ appointment.reason }}<br>
+              <strong>Status:</strong> {{ appointment.status }}
+            </div>
+            <button *ngIf="appointment.status !== 'Cancelled'" class="btn btn-danger" (click)="cancelAppointment(appointment.id)">Cancel</button>
+          </li>
+        </ul>
+      </ng-container>
+      <ng-template #noCurrentAppointments>
+        <p>You have no current appointments scheduled.</p>
+      </ng-template>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Canceled Appointments
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-container *ngIf="canceledAppointments.length > 0; else noCanceledAppointments">
+        <ul class="list-group">
+          <li *ngFor="let appointment of canceledAppointments" class="list-group-item">
+            <div>
+              <strong>Patient:</strong> {{ appointment.patient.full_name || appointment.patient.username }}<br>
+              <strong>Date:</strong> {{ formatAppointmentDate(appointment.date) }}<br>
+              <strong>Reason:</strong> {{ appointment.reason }}<br>
+              <strong>Status:</strong> {{ appointment.status }}
+            </div>
+          </li>
+        </ul>
+      </ng-container>
+      <ng-template #noCanceledAppointments>
+        <p>You have no canceled appointments.</p>
+      </ng-template>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

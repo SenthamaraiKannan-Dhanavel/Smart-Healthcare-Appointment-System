@@ -1,0 +1,49 @@
+<app-header></app-header>
+<div class="container mt-5">
+  <h2>Manage Availability</h2>
+  <form (ngSubmit)="addAvailability()" #availabilityForm="ngForm">
+    <mat-form-field>
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="newAvailability.date" name="date" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Start Time</mat-label>
+      <mat-select [(ngModel)]="newAvailability.start_time" name="start_time" required>
+        <mat-option *ngFor="let slot of timeSlots" [value]="slot">{{slot}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>End Time</mat-label>
+      <mat-select [(ngModel)]="newAvailability.end_time" name="end_time" required>
+        <mat-option *ngFor="let slot of timeSlots" [value]="slot">{{slot}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Available</mat-label>
+      <mat-select [(ngModel)]="newAvailability.is_available" name="is_available" required>
+        <mat-option [value]="true">Yes</mat-option>
+        <mat-option [value]="false">No</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!availabilityForm.form.valid">Add Availability</button>
+  </form>
+
+  <h3 class="mt-4">Current Availabilities</h3>
+  <mat-card *ngFor="let availability of availabilities" class="mb-3">
+    <mat-card-content class="d-flex justify-content-between align-items-center">
+      <div>
+        <strong>Date:</strong> {{availability.date | date:'mediumDate'}}<br>
+        <strong>Time:</strong> {{formatTime(availability.start_time)}} - {{formatTime(availability.end_time)}}<br>
+        <strong>Status:</strong> {{availability.is_available ? 'Available' : 'Unavailable'}}
+      </div>
+      <button mat-raised-button color="warn" (click)="deleteAvailability(availability.id)">Delete</button>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Add the Back to Dashboard button -->
+  <div class="mt-4">
+    <button mat-raised-button color="primary" [routerLink]="['/doctor-dashboard']">Back to Dashboard</button>
+  </div>
+</div>

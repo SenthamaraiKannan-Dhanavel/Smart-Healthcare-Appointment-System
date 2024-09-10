@@ -1,0 +1,27 @@
+<app-header></app-header>
+<div class="container mt-5">
+    <h2 class="text-center">Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-4">
+      <div class="form-group mb-3">
+        <label for="username">Username</label>
+        <input id="username" formControlName="username" type="text" class="form-control" [class.is-invalid]="usernameControl?.invalid && (usernameControl?.dirty || usernameControl?.touched)" />
+        <div *ngIf="usernameControl?.invalid && (usernameControl?.dirty || usernameControl?.touched)" class="invalid-feedback">
+          <div *ngIf="usernameControl?.errors?.['required']">Username is required.</div>
+        </div>
+      </div>
+      <div class="form-group mb-3">
+        <label for="password">Password</label>
+        <input id="password" formControlName="password" type="password" class="form-control" [class.is-invalid]="passwordControl?.invalid && (passwordControl?.dirty || passwordControl?.touched)" />
+        <div *ngIf="passwordControl?.invalid && (passwordControl?.dirty || passwordControl?.touched)" class="invalid-feedback">
+          <div *ngIf="passwordControl?.errors?.['required']">Password is required.</div>
+          <div *ngIf="passwordControl?.errors?.['minlength']">Password must be at least 6 characters long.</div>
+        </div>
+      </div>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
+      </div>
+      <button type="submit" class="btn btn-primary mt-3" [disabled]="loginForm.invalid || isSubmitting">
+        {{ isSubmitting ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
+  </div>
